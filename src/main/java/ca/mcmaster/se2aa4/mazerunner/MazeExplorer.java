@@ -13,10 +13,8 @@ public class MazeExplorer {
     
     public MazeExplorer(Maze maze) {
         this.maze = maze;
-        // Start at the maze entry.
+        // start at the maze entry
         this.currentPos = maze.getEntry();
-        // Determine initial direction based on which border the entry is on.
-        // If on the west border, face EAST; if on the east border, face WEST.
         if (maze.getEntry().getCol() == 0) {
             currentDir = Direction.EAST;
         } else {
@@ -26,16 +24,15 @@ public class MazeExplorer {
         logger.info("Starting at " + currentPos + " facing " + currentDir);
     }
     
-    // Returns true if the cell in the given direction from currentPos is open.
     private boolean canMove(Direction d) {
         Position newPos = currentPos.move(d);
         return maze.isValid(newPos) && !maze.isWall(newPos);
     }
     
-    // Implements the right-hand rule to explore the maze.
+    // right-hand rule to explore the maze
     public String explore() {
-        // A safeguard to prevent an infinite loop (adjust maxSteps as needed).
-        int maxSteps = 10000;
+        //prevent an infinite loop
+        int maxSteps = 100000;
         int steps = 0;
         
         while (!currentPos.equals(maze.getExit())) {
@@ -43,17 +40,14 @@ public class MazeExplorer {
                 logger.error("Exceeded maximum steps without finding the exit.");
                 return "NO_PATH_FOUND";
             }
-            // Try turning right.
             Direction rightDir = currentDir.turnRight();
             if (canMove(rightDir)) {
                 currentDir = rightDir;
                 path.append("R");
                 moveForward();
             } else if (canMove(currentDir)) {
-                // Go straight if possible.
                 moveForward();
             } else {
-                // Otherwise, turn left.
                 currentDir = currentDir.turnLeft();
                 path.append("L");
             }
@@ -62,7 +56,7 @@ public class MazeExplorer {
         return path.toString();
     }
     
-    // Moves forward in the current direction.
+    // moves forward in the current direction
     private void moveForward() {
         if (canMove(currentDir)) {
             currentPos = currentPos.move(currentDir);

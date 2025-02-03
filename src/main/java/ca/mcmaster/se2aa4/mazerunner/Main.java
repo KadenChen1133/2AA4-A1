@@ -37,7 +37,7 @@ public class Main {
             Maze maze = new Maze(mazeFile);
             MazeExplorer explorer = new MazeExplorer(maze);
             String computedPath = explorer.explore();
-            logger.info("Computed path: " + computedPath);
+            System.out.println("Computed path: " + computedPath);
         } catch (Exception e) {
             logger.error("An error occurred while processing the maze.", e);
         }
