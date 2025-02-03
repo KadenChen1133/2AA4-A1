@@ -16,11 +16,11 @@ public class Maze {
 
     public Maze(String filename) throws IOException {
         List<String> lines = new ArrayList<>();
-        // Read every line from the file—even if it's blank.
+        // read line from the file
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Do not skip blank lines; add them as-is.
+                // do not skip blank lines
                 lines.add(line);
             }
         }
@@ -30,7 +30,7 @@ public class Maze {
             throw new IllegalArgumentException("Maze file must not be empty.");
         }
         
-        // Determine the maximum row length among all lines.
+        // determine the maximum row lengt
         int maxCols = 0;
         for (String s : lines) {
             if (s.length() > maxCols) {
@@ -38,11 +38,11 @@ public class Maze {
             }
         }
         
-        // Pad each line with spaces so that all rows have the same length.
+        // pad lines with spaces
         for (int i = 0; i < lines.size(); i++) {
             String s = lines.get(i);
             if (s.length() < maxCols) {
-                // Right-pad with spaces.
+                //right-pad with spaces
                 lines.set(i, String.format("%-" + maxCols + "s", s));
             }
         }
@@ -54,12 +54,9 @@ public class Maze {
             grid[r] = lines.get(r).toCharArray();
         }
         
-        //for (int r = 0; r < rows; r++) {
+        /**for (int r = 0; r < rows; r++) {
             //System.out.println("Row " + r + ": [" + new String(grid[r]) + "]");
-        //}
-        
-        // Identify gaps on the borders:
-        // Check for a gap (space) in the west border (column 0) and east border (last column).
+        }**/
         Position westGap = null;
         Position eastGap = null;
         for (int r = 0; r < rows; r++) {
@@ -79,10 +76,10 @@ public class Maze {
             exit = eastGap;
         } else if (westGap != null) {
             entry = westGap;
-            exit = westGap; // fallback if only one gap is found.
+            exit = westGap; // fallback if only one gap is found
         } else if (eastGap != null) {
             entry = eastGap;
-            exit = eastGap; // fallback if only one gap is found.
+            exit = eastGap;
         } else {
             logger.error("No entry or exit found in the maze file.");
             throw new IllegalArgumentException("Maze must have an entry and an exit.");
